@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Models.Produto>
+
+@{
+    ViewData["Title"] = "Lista de Produtos";
+}
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary mb-0">🛒 Gerenciamento de Produtos</h2>
+        <a asp-action="Criar" class="btn btn-success btn-lg shadow-sm">
+            <i class="fas fa-plus-circle me-2"></i> Cadastrar Novo Produto
+        </a>
+    </div>
+
+    <hr class="mb-4" />
+
+    <div class="table-responsive">
+        <table class="table table-hover table-striped table-bordered align-middle shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" style="width: 8%;">@Html.DisplayNameFor(model => model.Id)</th>
+                    <th scope="col" style="width: 30%;">@Html.DisplayNameFor(model => model.Nome)</th>
+                    <th scope="col" style="width: 15%;">@Html.DisplayNameFor(model => model.Preco)</th>
+                    <th scope="col" style="width: 10%;">@Html.DisplayNameFor(model => model.Status)</th>
+                    <th scope="col" style="width: 15%;">@Html.DisplayNameFor(model => model.IdUsuarioCadastro)</th>
+                    <th scope="col" style="width: 15%;">@Html.DisplayNameFor(model => model.IdUsuarioUpdate)</th>
+                    <th scope="col" style="width: 12%;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                        <td>R$ @Html.DisplayFor(modelItem => item.Preco)</td>
+                        <td class="text-center">
+                            @if (item.Status)
+                            {
+                                <span class="badge bg-success">Ativo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inativo</span>
+                            }
+                        </td>
+                        <td class="text-center">@Html.DisplayFor(modelItem => item.IdUsuarioCadastro)</td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.IdUsuarioUpdate)
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Editar" asp-route-id="@item.Id" class="btn btn-sm btn-primary" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+
+                                <form asp-controller="Produtos" asp-action="Excluir" asp-route-id="@item.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Excluir">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center mt-4" role="alert">
+            Nenhum produto cadastrado no momento.
+        </div>
+    }
+
+</div>
